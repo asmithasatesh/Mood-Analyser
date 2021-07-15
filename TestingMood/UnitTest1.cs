@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mood_Analyser;
+using System;
 
 namespace TestingMood
 {
@@ -10,6 +11,7 @@ namespace TestingMood
         MoodAnalyser setmood1;
         MoodAnalyser setNull;
         MoodAnalyser setEmpty;
+        MoodAnalyserFactory moodAnalyserFactory;
 
         [TestInitialize]
         public void SetUp()
@@ -22,6 +24,7 @@ namespace TestingMood
             setNull = new MoodAnalyser(message2);
             string[] message3 = { "" };
             setEmpty = new MoodAnalyser(message3);
+            moodAnalyserFactory = new MoodAnalyserFactory();
 
         }
         /// <summary>
@@ -96,6 +99,50 @@ namespace TestingMood
                 Assert.AreEqual(expected, ex.Message);
             }
         }
-       
+        /// <summary>
+        /// TC 4.1
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Using Reflection")]
+        public void Given_MoodAnalyser_using_Reflection_Return_defaultParameter()
+        {
+            MoodAnalyser expexted = new MoodAnalyser();
+            object constructor;
+
+            constructor = moodAnalyserFactory.CreatingObjectWithMethod("Mood_Analyser.MoodAnalyser", "MoodAnalyser");
+            expexted.Equals(expexted);
+        }
+
+        [TestMethod]
+        [TestCategory("Using Reflection")]
+        public void Given_InvalidConstructor_using_Reflection_Return_CustomisedException()
+        {
+            string expected = "Class does not have such Constructor";
+            object constructor;
+            try
+            {
+                constructor = moodAnalyserFactory.CreatingObjectWithMethod("Mood_Analyser.MoodAnalyser", "MoodAnaly");
+            }
+            catch(CustomizeException actual)
+            {
+                Assert.AreEqual(expected, actual.Message);
+            }
+        }
+        [TestMethod]
+        [TestCategory("Using Reflection")]
+        public void Given_InvalidClass_using_Reflection_Return_CustomisedException()
+        {
+            string expected = "Class does not exist";
+            object constructor;
+            try
+            {
+                constructor = moodAnalyserFactory.CreatingObjectWithMethod("Mood_Analyser.MoodAnaly", "MoodAnaly");
+            }
+            catch (CustomizeException actual)
+            {
+                Assert.AreEqual(expected, actual.Message);
+            }
+        }
+
     }
 }
