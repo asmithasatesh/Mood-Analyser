@@ -8,7 +8,7 @@ namespace TestingMood
     public class UnitTest1
     {
         MoodAnalyser setmood;
-        MoodAnalyser setmood1;
+        MoodAnalyser setmoodAny;
         MoodAnalyser setNull;
         MoodAnalyser setEmpty;
         MoodAnalyserFactory moodAnalyserFactory;
@@ -16,10 +16,10 @@ namespace TestingMood
         [TestInitialize]
         public void SetUp()
         {
-            string[] message = { "i", "am", "in", "sad", "mood" };
-            setmood = new MoodAnalyser(message);
-            string[] message1 = { "i", "am", "in", "any", "mood" };
-            setmood1 = new MoodAnalyser(message1);
+            string[] sadmessage = { "i", "am", "in", "sad", "mood" };
+            setmood = new MoodAnalyser(sadmessage);
+            string[] happymessage = { "i", "am", "in", "any", "mood" };
+            setmoodAny = new MoodAnalyser(happymessage);
             string[] message2 = null;
             setNull = new MoodAnalyser(message2);
             string[] message3 = { "" };
@@ -47,7 +47,7 @@ namespace TestingMood
         [TestCategory("Happy")]
         public void Given_AnyMood_return_Happy()
         {
-            string actual = setmood1.ReturnMessage();
+            string actual = setmoodAny.ReturnMessage();
             string expected = "Happy";
             Assert.AreEqual(expected, actual);
         }
@@ -110,9 +110,11 @@ namespace TestingMood
             object constructor;
 
             constructor = moodAnalyserFactory.CreatingObjectWithMethod("Mood_Analyser.MoodAnalyser", "MoodAnalyser");
-            expexted.Equals(expexted);
+            expexted.Equals(constructor);
         }
-
+        /// <summary>
+        /// TC 4.2
+        /// </summary>
         [TestMethod]
         [TestCategory("Using Reflection")]
         public void Given_InvalidConstructor_using_Reflection_Return_CustomisedException()
@@ -128,6 +130,9 @@ namespace TestingMood
                 Assert.AreEqual(expected, actual.Message);
             }
         }
+        /// <summary>
+        /// TC 4.3
+        /// </summary>
         [TestMethod]
         [TestCategory("Using Reflection")]
         public void Given_InvalidClass_using_Reflection_Return_CustomisedException()
@@ -137,6 +142,66 @@ namespace TestingMood
             try
             {
                 constructor = moodAnalyserFactory.CreatingObjectWithMethod("Mood_Analyser.MoodAnaly", "MoodAnaly");
+            }
+            catch (CustomizeException actual)
+            {
+                Assert.AreEqual(expected, actual.Message);
+            }
+        }
+        /// <summary>
+        /// TC 5.1
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Using Parameterised Reflection")]
+        public void Given_MoodAnalyserAny_using_Reflection_Return_Parameterisedobject()
+        {
+            string[] happymessage = { "i", "am", "in", "any", "mood" };
+            MoodAnalyser expected = setmoodAny;
+            object constructor;
+            try
+            {
+                constructor = moodAnalyserFactory.CreatingParameterisedObjectWithMethod("Mood_Analyser.MoodAnalyser", "MoodAnalyser", happymessage);
+                expected.Equals(constructor);
+            }
+            catch (CustomizeException actual)
+            {
+                Assert.AreEqual(expected, actual.Message);
+            }
+        }
+        /// <summary>
+        /// TC 5.2
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Using Parameterised Reflection")]
+        public void Given_InvalidconstructorMoodAnalyser_using_Reflection_Return_Parameterisedobject()
+        {
+            string[] happymessage = { "i", "am", "in", "any", "mood" };
+            string expected = "Class does not exist";
+            object constructor;
+            try
+            {
+                constructor = moodAnalyserFactory.CreatingParameterisedObjectWithMethod("Mood_Analyser.MoodAnalyser", "MoodAnalye", happymessage);
+                expected.Equals(constructor);
+            }
+            catch (CustomizeException actual)
+            {
+                Assert.AreEqual(expected, actual.Message);
+            }
+        }
+        /// <summary>
+        /// TC 5.3
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Using Parameterised Reflection")]
+        public void Given_InvalidClass_MoodAnalyser_using_Reflection_Return_Parameterisedobject()
+        {
+            string[] happymessage = { "i", "am", "in", "any", "mood" };
+            string expected = "Class does not have such Constructor";
+            object constructor;
+            try
+            {
+                constructor = moodAnalyserFactory.CreatingParameterisedObjectWithMethod("Mood_Analyser.MoodAna", "MoodAnalyser", happymessage);
+                expected.Equals(constructor);
             }
             catch (CustomizeException actual)
             {

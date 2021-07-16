@@ -8,6 +8,7 @@ namespace Mood_Analyser
 {
     public class MoodAnalyserFactory
     {
+        //To Create object from Default Constructor
         public object CreatingObjectWithMethod(string className,string constructorName)
         {
             string  pattern = @"." + constructorName + "$";
@@ -19,6 +20,30 @@ namespace Mood_Analyser
                     Assembly assembly = Assembly.GetExecutingAssembly();
                     Type classNameStore = assembly.GetType(className);
                     var obj = Activator.CreateInstance(classNameStore);
+                    return obj;
+                }
+                catch
+                {
+                    throw new CustomizeException(CustomizeException.MyException.CLASS_NOT_FOUND, "Class does not exist");
+
+                }
+
+            }
+            else
+            {
+                throw new CustomizeException(CustomizeException.MyException.CONSTRUCTOR_NOT_FOUND, "Class does not have such Constructor");
+            }
+        }
+        //To create object from Parameterised Constructor
+        public object CreatingParameterisedObjectWithMethod(string className, string constructorName,string[] message)
+        {
+            Type type = typeof(MoodAnalyser);
+            if (type.Name.Equals(className) || type.FullName.Equals(className))
+            {
+                try
+                {
+                    ConstructorInfo constructorInfo = type.GetConstructor(new[] { typeof(string[]) });
+                    object obj = constructorInfo.Invoke(new object[] { message });
                     return obj;
                 }
                 catch
