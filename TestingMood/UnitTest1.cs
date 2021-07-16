@@ -208,7 +208,9 @@ namespace TestingMood
                 Assert.AreEqual(expected, actual.Message);
             }
         }
-        //Invoke method for happy message
+        /// <summary>
+        /// TC 6.1
+        /// </summary>
         [TestMethod]
         [TestCategory("Invoke Method")]
         public void Given_SadMessage_should_return_Sad()
@@ -218,12 +220,26 @@ namespace TestingMood
             string actual = moodAnalyserFactory.InvokeMethod("ReturnMessage", sadmessage);
             Assert.AreEqual(expected, actual);
         }
-        //Invoke method for wrong method name
+        /// <summary>
+        /// TC 6.2
+        /// </summary>
         [TestMethod]
         [TestCategory("Invoke Method")]
         public void Given_Any_Message_should_return_Sad()
         {
             string[] happymessage = { "i", "am", "in", "any", "mood" };
+            string expected = "Happy";
+            string actual = moodAnalyserFactory.InvokeMethod("ReturnMessage", happymessage);
+            Assert.AreEqual(expected, actual);
+        }
+        /// <summary>
+        /// TC 6.3
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Invoke Method")]
+        public void Given_Happy_Message_should_return_Sad()
+        {
+            string[] happymessage = { "i", "am", "in", "happy", "mood" };
             string expected = "Happy";
             string actual = moodAnalyserFactory.InvokeMethod("ReturnMessage", happymessage);
             Assert.AreEqual(expected, actual);
