@@ -208,6 +208,26 @@ namespace TestingMood
                 Assert.AreEqual(expected, actual.Message);
             }
         }
+        //Invoke method for happy message
+        [TestMethod]
+        [TestCategory("Invoke Method")]
+        public void Given_SadMessage_should_return_Sad()
+        {
+            string[] sadmessage = { "i", "am", "in", "sad", "mood" };
+            string expected = "Sad";
+            string actual = moodAnalyserFactory.InvokeMethod("ReturnMessage", sadmessage);
+            Assert.AreEqual(expected, actual);
+        }
+        //Invoke method for wrong method name
+        [TestMethod]
+        [TestCategory("Invoke Method")]
+        public void Given_Any_Message_should_return_Sad()
+        {
+            string[] happymessage = { "i", "am", "in", "any", "mood" };
+            string expected = "Happy";
+            string actual = moodAnalyserFactory.InvokeMethod("ReturnMessage", happymessage);
+            Assert.AreEqual(expected, actual);
+        }
 
     }
 }
